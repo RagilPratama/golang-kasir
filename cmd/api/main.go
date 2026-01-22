@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"kasir-api/internal/handlers"
 	"kasir-api/internal/repository"
@@ -15,6 +16,16 @@ func main() {
 	produkHandler := handlers.NewProdukHandler(produkRepo)
 
 	// Setup Routes
+	// Root handler
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		response := map[string]string{
+			"message": "Welcome to Kasir API",
+			"status":  "running",
+		}
+		json.NewEncoder(w).Encode(response)
+	})
+
 	// GET detail produk
 	// PUT update produk
 	http.HandleFunc("/api/produk/", produkHandler.HandleProdukDetail)
