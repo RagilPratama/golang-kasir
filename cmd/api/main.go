@@ -15,7 +15,8 @@ import (
 // @title Kasir API
 // @version 1.0
 // @description API untuk aplikasi kasir sederhana
-// @host localhost:8081
+// @host golang-kasir-production.up.railway.app
+// @Schemes https http
 // @BasePath /api
 func main() {
 	// Setup Routes
