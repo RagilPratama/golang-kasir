@@ -19,29 +19,47 @@ func NewProdukHandler(repo repository.ProdukRepository) *ProdukHandler {
 
 func (h *ProdukHandler) HandleProdukList(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		h.getProduk(w, r)
+		h.GetProduk(w, r)
 	} else if r.Method == "POST" {
-		h.createProduk(w, r)
+		h.CreateProduk(w, r)
 	}
 }
 
 func (h *ProdukHandler) HandleProdukDetail(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		h.getDetailProduk(w, r)
+		h.GetDetailProduk(w, r)
 	} else if r.Method == "PUT" {
-		h.updateProduk(w, r)
+		h.UpdateProduk(w, r)
 	} else if r.Method == "DELETE" {
-		h.deleteProduk(w, r)
+		h.DeleteProduk(w, r)
 	}
 }
 
-func (h *ProdukHandler) getProduk(w http.ResponseWriter, r *http.Request) {
+// GetProduk godoc
+// @Summary Get all produk
+// @Description Get list of all produk
+// @Tags produk
+// @Accept json
+// @Produce json
+// @Success 200 {array} models.Produk
+// @Router /produk [get]
+func (h *ProdukHandler) GetProduk(w http.ResponseWriter, r *http.Request) {
 	produk := h.repo.GetAll()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(produk)
 }
 
-func (h *ProdukHandler) createProduk(w http.ResponseWriter, r *http.Request) {
+// CreateProduk godoc
+// @Summary Create new produk
+// @Description Create a new produk
+// @Tags produk
+// @Accept json
+// @Produce json
+// @Param produk body models.Produk true "Produk Data"
+// @Success 201 {object} models.Produk
+// @Failure 400 {string} string "invalid request"
+// @Router /produk [post]
+func (h *ProdukHandler) CreateProduk(w http.ResponseWriter, r *http.Request) {
 	var produkBaru models.Produk
 	err := json.NewDecoder(r.Body).Decode(&produkBaru)
 	if err != nil {
@@ -55,7 +73,18 @@ func (h *ProdukHandler) createProduk(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(created)
 }
 
-func (h *ProdukHandler) getDetailProduk(w http.ResponseWriter, r *http.Request) {
+// GetDetailProduk godoc
+// @Summary Get detail produk
+// @Description Get detail of a produk by ID
+// @Tags produk
+// @Accept json
+// @Produce json
+// @Param id path int true "Produk ID"
+// @Success 200 {object} models.Produk
+// @Failure 400 {string} string "invalid id"
+// @Failure 404 {string} string "produk not found"
+// @Router /produk/{id} [get]
+func (h *ProdukHandler) GetDetailProduk(w http.ResponseWriter, r *http.Request) {
 	idStr := strings.TrimPrefix(r.URL.Path, "/api/produk/")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -73,7 +102,19 @@ func (h *ProdukHandler) getDetailProduk(w http.ResponseWriter, r *http.Request) 
 	json.NewEncoder(w).Encode(p)
 }
 
-func (h *ProdukHandler) updateProduk(w http.ResponseWriter, r *http.Request) {
+// UpdateProduk godoc
+// @Summary Update produk
+// @Description Update an existing produk
+// @Tags produk
+// @Accept json
+// @Produce json
+// @Param id path int true "Produk ID"
+// @Param produk body models.Produk true "Produk Data"
+// @Success 200 {object} models.Produk
+// @Failure 400 {string} string "invalid request/id"
+// @Failure 404 {string} string "produk not found"
+// @Router /produk/{id} [put]
+func (h *ProdukHandler) UpdateProduk(w http.ResponseWriter, r *http.Request) {
 	idStr := strings.TrimPrefix(r.URL.Path, "/api/produk/")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -98,7 +139,18 @@ func (h *ProdukHandler) updateProduk(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(updated)
 }
 
-func (h *ProdukHandler) deleteProduk(w http.ResponseWriter, r *http.Request) {
+// DeleteProduk godoc
+// @Summary Delete produk
+// @Description Delete a produk by ID
+// @Tags produk
+// @Accept json
+// @Produce json
+// @Param id path int true "Produk ID"
+// @Success 200 {object} map[string]string
+// @Failure 400 {string} string "invalid id"
+// @Failure 404 {string} string "produk not found"
+// @Router /produk/{id} [delete]
+func (h *ProdukHandler) DeleteProduk(w http.ResponseWriter, r *http.Request) {
 	idStr := strings.TrimPrefix(r.URL.Path, "/api/produk/")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
