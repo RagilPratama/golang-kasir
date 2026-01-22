@@ -14,6 +14,7 @@ type ProdukRepository interface {
 	GetByID(id int) (*models.Produk, error)
 	Create(p models.Produk) models.Produk
 	Update(id int, p models.Produk) (*models.Produk, error)
+	Delete(id int) error
 }
 
 type memoryProdukRepository struct {
@@ -58,4 +59,14 @@ func (r *memoryProdukRepository) Update(id int, updateData models.Produk) (*mode
 		}
 	}
 	return nil, ErrProdukNotFound
+}
+
+func (r *memoryProdukRepository) Delete(id int) error {
+	for i := range r.produk {
+		if r.produk[i].ID == id {
+			r.produk = append(r.produk[:i], r.produk[i+1:]...)
+			return nil
+		}
+	}
+	return ErrProdukNotFound
 }

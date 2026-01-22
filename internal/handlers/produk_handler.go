@@ -30,6 +30,8 @@ func (h *ProdukHandler) HandleProdukDetail(w http.ResponseWriter, r *http.Reques
 		h.getDetailProduk(w, r)
 	} else if r.Method == "PUT" {
 		h.updateProduk(w, r)
+	} else if r.Method == "DELETE" {
+		h.deleteProduk(w, r)
 	}
 }
 
@@ -94,4 +96,22 @@ func (h *ProdukHandler) updateProduk(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(updated)
+}
+
+func (h *ProdukHandler) deleteProduk(w http.ResponseWriter, r *http.Request) {
+	idStr := strings.TrimPrefix(r.URL.Path, "/api/produk/")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "invalid id", http.StatusBadRequest)
+		return
+	}
+
+	err = h.repo.Delete(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"message": "Produk Berhasil Dihapus"})
 }
