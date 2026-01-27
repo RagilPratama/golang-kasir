@@ -18,7 +18,10 @@ func LoadConfig(path string) (config Config, err error) {
 
 	err = viper.ReadInConfig()
 	if err != nil {
-		return
+		// Jika file tidak ditemukan, kita abaikan saja karena mungkin menggunakan Environment Variables (misal di Railway/Docker)
+		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
+			return
+		}
 	}
 
 	err = viper.Unmarshal(&config)

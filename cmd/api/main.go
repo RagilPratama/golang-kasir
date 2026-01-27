@@ -29,7 +29,7 @@ func main() {
 	// Load Config
 	cfg, err := config.LoadConfig(".")
 	if err != nil {
-		log.Fatal("cannot load config:", err)
+		log.Printf("Warning: cannot load config file, relying on environment variables: %v", err)
 	}
 
 	// Connect to DB
