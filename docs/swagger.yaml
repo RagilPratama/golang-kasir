@@ -9,15 +9,15 @@ definitions:
       name:
         type: string
     type: object
-  models.Produk:
+  models.Product:
     properties:
-      harga:
-        type: integer
       id:
         type: integer
-      nama:
+      name:
         type: string
-      stok:
+      price:
+        type: integer
+      stock:
         type: integer
     type: object
 host: golang-kasir-production.up.railway.app
@@ -158,11 +158,11 @@ paths:
       summary: Update category
       tags:
       - category
-  /produk:
+  /product:
     get:
       consumes:
       - application/json
-      description: Get list of all produk
+      description: Get list of all product
       produces:
       - application/json
       responses:
@@ -170,43 +170,43 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Produk'
+              $ref: '#/definitions/models.Product'
             type: array
-      summary: Get all produk
+      summary: Get all product
       tags:
-      - produk
+      - product
     post:
       consumes:
       - application/json
-      description: Create a new produk
+      description: Create a new product
       parameters:
-      - description: Produk Data
+      - description: Product Data
         in: body
-        name: produk
+        name: product
         required: true
         schema:
-          $ref: '#/definitions/models.Produk'
+          $ref: '#/definitions/models.Product'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.Produk'
+            $ref: '#/definitions/models.Product'
         "400":
           description: invalid request
           schema:
             type: string
-      summary: Create new produk
+      summary: Create new product
       tags:
-      - produk
-  /produk/{id}:
+      - product
+  /product/{id}:
     delete:
       consumes:
       - application/json
-      description: Delete a produk by ID
+      description: Delete a product by ID
       parameters:
-      - description: Produk ID
+      - description: Product ID
         in: path
         name: id
         required: true
@@ -225,18 +225,18 @@ paths:
           schema:
             type: string
         "404":
-          description: produk not found
+          description: product not found
           schema:
             type: string
-      summary: Delete produk
+      summary: Delete product
       tags:
-      - produk
+      - product
     get:
       consumes:
       - application/json
-      description: Get detail of a produk by ID
+      description: Get detail of a product by ID
       parameters:
-      - description: Produk ID
+      - description: Product ID
         in: path
         name: id
         required: true
@@ -247,52 +247,52 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Produk'
+            $ref: '#/definitions/models.Product'
         "400":
           description: invalid id
           schema:
             type: string
         "404":
-          description: produk not found
+          description: product not found
           schema:
             type: string
-      summary: Get detail produk
+      summary: Get detail product
       tags:
-      - produk
+      - product
     put:
       consumes:
       - application/json
-      description: Update an existing produk
+      description: Update an existing product
       parameters:
-      - description: Produk ID
+      - description: Product ID
         in: path
         name: id
         required: true
         type: integer
-      - description: Produk Data
+      - description: Product Data
         in: body
-        name: produk
+        name: product
         required: true
         schema:
-          $ref: '#/definitions/models.Produk'
+          $ref: '#/definitions/models.Product'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Produk'
+            $ref: '#/definitions/models.Product'
         "400":
           description: invalid request/id
           schema:
             type: string
         "404":
-          description: produk not found
+          description: product not found
           schema:
             type: string
-      summary: Update produk
+      summary: Update product
       tags:
-      - produk
+      - product
 schemes:
 - https
 - http

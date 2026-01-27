@@ -213,9 +213,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/produk": {
+        "/product": {
             "get": {
-                "description": "Get list of all produk",
+                "description": "Get list of all product",
                 "consumes": [
                     "application/json"
                 ],
@@ -223,23 +223,23 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "produk"
+                    "product"
                 ],
-                "summary": "Get all produk",
+                "summary": "Get all product",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Produk"
+                                "$ref": "#/definitions/models.Product"
                             }
                         }
                     }
                 }
             },
             "post": {
-                "description": "Create a new produk",
+                "description": "Create a new product",
                 "consumes": [
                     "application/json"
                 ],
@@ -247,17 +247,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "produk"
+                    "product"
                 ],
-                "summary": "Create new produk",
+                "summary": "Create new product",
                 "parameters": [
                     {
-                        "description": "Produk Data",
-                        "name": "produk",
+                        "description": "Product Data",
+                        "name": "product",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Produk"
+                            "$ref": "#/definitions/models.Product"
                         }
                     }
                 ],
@@ -265,7 +265,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.Produk"
+                            "$ref": "#/definitions/models.Product"
                         }
                     },
                     "400": {
@@ -277,9 +277,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/produk/{id}": {
+        "/product/{id}": {
             "get": {
-                "description": "Get detail of a produk by ID",
+                "description": "Get detail of a product by ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -287,13 +287,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "produk"
+                    "product"
                 ],
-                "summary": "Get detail produk",
+                "summary": "Get detail product",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Produk ID",
+                        "description": "Product ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -303,7 +303,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Produk"
+                            "$ref": "#/definitions/models.Product"
                         }
                     },
                     "400": {
@@ -313,7 +313,7 @@ const docTemplate = `{
                         }
                     },
                     "404": {
-                        "description": "produk not found",
+                        "description": "product not found",
                         "schema": {
                             "type": "string"
                         }
@@ -321,7 +321,7 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "Update an existing produk",
+                "description": "Update an existing product",
                 "consumes": [
                     "application/json"
                 ],
@@ -329,24 +329,24 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "produk"
+                    "product"
                 ],
-                "summary": "Update produk",
+                "summary": "Update product",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Produk ID",
+                        "description": "Product ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "Produk Data",
-                        "name": "produk",
+                        "description": "Product Data",
+                        "name": "product",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Produk"
+                            "$ref": "#/definitions/models.Product"
                         }
                     }
                 ],
@@ -354,7 +354,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Produk"
+                            "$ref": "#/definitions/models.Product"
                         }
                     },
                     "400": {
@@ -364,7 +364,7 @@ const docTemplate = `{
                         }
                     },
                     "404": {
-                        "description": "produk not found",
+                        "description": "product not found",
                         "schema": {
                             "type": "string"
                         }
@@ -372,7 +372,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Delete a produk by ID",
+                "description": "Delete a product by ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -380,13 +380,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "produk"
+                    "product"
                 ],
-                "summary": "Delete produk",
+                "summary": "Delete product",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Produk ID",
+                        "description": "Product ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -409,7 +409,7 @@ const docTemplate = `{
                         }
                     },
                     "404": {
-                        "description": "produk not found",
+                        "description": "product not found",
                         "schema": {
                             "type": "string"
                         }
@@ -433,19 +433,19 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Produk": {
+        "models.Product": {
             "type": "object",
             "properties": {
-                "harga": {
-                    "type": "integer"
-                },
                 "id": {
                     "type": "integer"
                 },
-                "nama": {
+                "name": {
                     "type": "string"
                 },
-                "stok": {
+                "price": {
+                    "type": "integer"
+                },
+                "stock": {
                     "type": "integer"
                 }
             }
