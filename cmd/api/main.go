@@ -89,14 +89,15 @@ func main() {
 
 	// Initialize Repository
 	productRepo := repository.NewPostgresProductRepository(db)
-	categoryRepo := repository.NewMemoryCategoryRepository()
+	categoryRepo := repository.NewPostgresCategoryRepository(db)
 
 	// Initialize Service
 	productService := service.NewProductService(productRepo)
+	categoryService := service.NewCategoryService(categoryRepo)
 
 	// Initialize Handler
 	productHandler := handlers.NewProductHandler(productService)
-	categoryHandler := handlers.NewCategoryHandler(categoryRepo)
+	categoryHandler := handlers.NewCategoryHandler(categoryService)
 	// GET detail product
 	// PUT update product
 	http.HandleFunc("/api/product/", productHandler.HandleProductDetail)

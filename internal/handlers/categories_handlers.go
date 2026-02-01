@@ -3,18 +3,18 @@ package handlers
 import (
 	"encoding/json"
 	"kasir-api/internal/models"
-	"kasir-api/internal/repository"
+	"kasir-api/internal/service"
 	"net/http"
 	"strconv"
 	"strings"
 )
 
 type CategoryHandler struct {
-	repo repository.CategoriesRepository
+	service service.CategoryService
 }
 
-func NewCategoryHandler(repo repository.CategoriesRepository) *CategoryHandler {
-	return &CategoryHandler{repo: repo}
+func NewCategoryHandler(service service.CategoryService) *CategoryHandler {
+	return &CategoryHandler{service: service}
 }
 
 func (h *CategoryHandler) HandleCategoryList(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +44,7 @@ func (h *CategoryHandler) HandleCategoryDetail(w http.ResponseWriter, r *http.Re
 // @Success 200 {array} models.Category
 // @Router /category [get]
 func (h *CategoryHandler) GetAll(w http.ResponseWriter, r *http.Request) {
-	category := h.repo.GetAll()
+	category := h.service.GetAll()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(category)
 }
@@ -65,7 +65,7 @@ func (h *CategoryHandler) Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	category = h.repo.Create(category)
+	category = h.service.Create(category)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(category)
 }
@@ -88,7 +88,7 @@ func (h *CategoryHandler) GetDetailCategories(w http.ResponseWriter, r *http.Req
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	category, err := h.repo.GetByID(id)
+	category, err := h.service.GetByID(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
@@ -123,7 +123,7 @@ func (h *CategoryHandler) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	updated, err := h.repo.Update(id, category)
+	updated, err := h.service.Update(id, category)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
@@ -151,7 +151,7 @@ func (h *CategoryHandler) Delete(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	if err := h.repo.Delete(id); err != nil {
+	if err := h.service.Delete(id); err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
