@@ -59,6 +59,18 @@ func main() {
 			price INT NOT NULL,
 			stock INT NOT NULL
 		);
+
+		ALTER TABLE products ADD COLUMN IF NOT EXISTS category_id INT;
+		
+		DO $$ 
+		BEGIN 
+			IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_products_categories') THEN 
+				ALTER TABLE products 
+				ADD CONSTRAINT fk_products_categories 
+				FOREIGN KEY (category_id) 
+				REFERENCES categories(id); 
+			END IF; 
+		END $$;
 	`)
 	if err != nil {
 		log.Fatal("cannot create tables:", err)
