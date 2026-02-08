@@ -41,8 +41,21 @@ func (r *postgresTransactionRepository) CreateTransaction(t *models.Transaction)
 	}
 	defer stmt.Close()
 
+	// Update Stock
+	updateStockQuery := `UPDATE products SET stock = stock - $1 WHERE id = $2`
+	updateStockStmt, err := tx.Prepare(updateStockQuery)
+	if err != nil {
+		return err
+	}
+	defer updateStockStmt.Close()
+
 	for _, detail := range t.Details {
 		_, err = stmt.Exec(t.ID, detail.ProductID, detail.Quantity, detail.Subtotal)
+		if err != nil {
+			return err
+		}
+
+		_, err = updateStockStmt.Exec(detail.Quantity, detail.ProductID)
 		if err != nil {
 			return err
 		}
