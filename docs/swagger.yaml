@@ -38,6 +38,22 @@ definitions:
       stock:
         type: integer
     type: object
+  models.ProductBestSeller:
+    properties:
+      nama:
+        type: string
+      qty_terjual:
+        type: integer
+    type: object
+  models.SalesReport:
+    properties:
+      produk_terlaris:
+        $ref: '#/definitions/models.ProductBestSeller'
+      total_revenue:
+        type: integer
+      total_transaksi:
+        type: integer
+    type: object
   models.Transaction:
     properties:
       created_at:
@@ -374,6 +390,26 @@ paths:
       summary: Update product
       tags:
       - product
+  /report/hari-ini:
+    get:
+      consumes:
+      - application/json
+      description: Get total revenue, total transactions, and best selling product
+        for today
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SalesReport'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get daily sales report
+      tags:
+      - report
 schemes:
 - https
 - http

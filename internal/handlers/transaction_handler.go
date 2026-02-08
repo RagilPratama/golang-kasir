@@ -49,3 +49,28 @@ func (h *TransactionHandler) HandleCheckout(w http.ResponseWriter, r *http.Reque
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(transaction)
 }
+
+// GetDailyReport godoc
+// @Summary Get daily sales report
+// @Description Get total revenue, total transactions, and best selling product for today
+// @Tags report
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.SalesReport
+// @Failure 500 {string} string "Internal Server Error"
+// @Router /report/hari-ini [get]
+func (h *TransactionHandler) HandleDailyReport(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	report, err := h.service.GetDailyReport()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(report)
+}

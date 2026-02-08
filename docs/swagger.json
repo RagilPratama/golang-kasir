@@ -468,6 +468,35 @@
                     }
                 }
             }
+        },
+        "/report/hari-ini": {
+            "get": {
+                "description": "Get total revenue, total transactions, and best selling product for today",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "report"
+                ],
+                "summary": "Get daily sales report",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.SalesReport"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -526,6 +555,31 @@
                     "type": "integer"
                 },
                 "stock": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.ProductBestSeller": {
+            "type": "object",
+            "properties": {
+                "nama": {
+                    "type": "string"
+                },
+                "qty_terjual": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.SalesReport": {
+            "type": "object",
+            "properties": {
+                "produk_terlaris": {
+                    "$ref": "#/definitions/models.ProductBestSeller"
+                },
+                "total_revenue": {
+                    "type": "integer"
+                },
+                "total_transaksi": {
                     "type": "integer"
                 }
             }

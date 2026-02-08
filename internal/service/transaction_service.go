@@ -4,10 +4,12 @@ import (
 	"errors"
 	"kasir-api/internal/models"
 	"kasir-api/internal/repository"
+	"time"
 )
 
 type TransactionService interface {
 	Checkout(items []models.CheckoutItem) (*models.Transaction, error)
+	GetDailyReport() (models.SalesReport, error)
 }
 
 type transactionService struct {
@@ -55,4 +57,14 @@ func (s *transactionService) Checkout(items []models.CheckoutItem) (*models.Tran
 	}
 
 	return transaction, nil
+}
+
+func (s *transactionService) GetDailyReport() (models.SalesReport, error) {
+	now := time.Now()
+	// Set time to beginning of the day (00:00:00)
+	startDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+	// Set time to end of the day (23:59:59)
+	endDate := time.Date(now.Year(), now.Month(), now.Day(), 23, 59, 59, 999999999, now.Location())
+
+	return s.repo.GetSalesSummary(startDate, endDate)
 }

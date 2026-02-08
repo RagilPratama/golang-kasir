@@ -129,6 +129,9 @@ func main() {
 	// Transaction
 	http.HandleFunc("/api/checkout", transactionHandler.HandleCheckout)
 
+	// Report
+	http.HandleFunc("/api/report/hari-ini", transactionHandler.HandleDailyReport)
+
 	// Swagger
 	http.HandleFunc("/swagger/", httpSwagger.WrapHandler)
 
