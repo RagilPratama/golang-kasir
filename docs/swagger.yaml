@@ -1,6 +1,6 @@
 basePath: /api
 definitions:
-  models.Category:
+  kasir-api_internal_models.Category:
     properties:
       description:
         type: string
@@ -9,24 +9,24 @@ definitions:
       name:
         type: string
     type: object
-  models.CheckoutItem:
+  kasir-api_internal_models.CheckoutItem:
     properties:
       product_id:
         type: integer
       quantity:
         type: integer
     type: object
-  models.CheckoutRequest:
+  kasir-api_internal_models.CheckoutRequest:
     properties:
       items:
         items:
-          $ref: '#/definitions/models.CheckoutItem'
+          $ref: '#/definitions/kasir-api_internal_models.CheckoutItem'
         type: array
     type: object
-  models.Product:
+  kasir-api_internal_models.Product:
     properties:
       category:
-        $ref: '#/definitions/models.Category'
+        $ref: '#/definitions/kasir-api_internal_models.Category'
       category_id:
         type: integer
       id:
@@ -38,36 +38,36 @@ definitions:
       stock:
         type: integer
     type: object
-  models.ProductBestSeller:
+  kasir-api_internal_models.ProductBestSeller:
     properties:
       nama:
         type: string
       qty_terjual:
         type: integer
     type: object
-  models.SalesReport:
+  kasir-api_internal_models.SalesReport:
     properties:
       produk_terlaris:
-        $ref: '#/definitions/models.ProductBestSeller'
+        $ref: '#/definitions/kasir-api_internal_models.ProductBestSeller'
       total_revenue:
         type: integer
       total_transaksi:
         type: integer
     type: object
-  models.Transaction:
+  kasir-api_internal_models.Transaction:
     properties:
       created_at:
         type: string
       details:
         items:
-          $ref: '#/definitions/models.TransactionDetail'
+          $ref: '#/definitions/kasir-api_internal_models.TransactionDetail'
         type: array
       id:
         type: integer
       total_amount:
         type: integer
     type: object
-  models.TransactionDetail:
+  kasir-api_internal_models.TransactionDetail:
     properties:
       id:
         type: integer
@@ -101,7 +101,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Category'
+              $ref: '#/definitions/kasir-api_internal_models.Category'
             type: array
       summary: Get all categories
       tags:
@@ -116,14 +116,14 @@ paths:
         name: category
         required: true
         schema:
-          $ref: '#/definitions/models.Category'
+          $ref: '#/definitions/kasir-api_internal_models.Category'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Category'
+            $ref: '#/definitions/kasir-api_internal_models.Category'
         "400":
           description: invalid request
           schema:
@@ -174,7 +174,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Category'
+            $ref: '#/definitions/kasir-api_internal_models.Category'
         "400":
           description: invalid id
           schema:
@@ -201,14 +201,14 @@ paths:
         name: category
         required: true
         schema:
-          $ref: '#/definitions/models.Category'
+          $ref: '#/definitions/kasir-api_internal_models.Category'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Category'
+            $ref: '#/definitions/kasir-api_internal_models.Category'
         "400":
           description: invalid request/id
           schema:
@@ -231,14 +231,14 @@ paths:
         name: checkout
         required: true
         schema:
-          $ref: '#/definitions/models.CheckoutRequest'
+          $ref: '#/definitions/kasir-api_internal_models.CheckoutRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.Transaction'
+            $ref: '#/definitions/kasir-api_internal_models.Transaction'
         "400":
           description: Invalid request body
           schema:
@@ -267,7 +267,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Product'
+              $ref: '#/definitions/kasir-api_internal_models.Product'
             type: array
       summary: Get all product
       tags:
@@ -282,14 +282,14 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/models.Product'
+          $ref: '#/definitions/kasir-api_internal_models.Product'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.Product'
+            $ref: '#/definitions/kasir-api_internal_models.Product'
         "400":
           description: invalid request
           schema:
@@ -344,7 +344,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Product'
+            $ref: '#/definitions/kasir-api_internal_models.Product'
         "400":
           description: invalid id
           schema:
@@ -371,14 +371,14 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/models.Product'
+          $ref: '#/definitions/kasir-api_internal_models.Product'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Product'
+            $ref: '#/definitions/kasir-api_internal_models.Product'
         "400":
           description: invalid request/id
           schema:
@@ -390,6 +390,41 @@ paths:
       summary: Update product
       tags:
       - product
+  /report:
+    get:
+      consumes:
+      - application/json
+      description: Get total revenue, total transactions, and best selling product
+        for a specific date range
+      parameters:
+      - description: Start Date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        required: true
+        type: string
+      - description: End Date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/kasir-api_internal_models.SalesReport'
+        "400":
+          description: Invalid date format
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get sales report by date range
+      tags:
+      - report
   /report/hari-ini:
     get:
       consumes:
@@ -402,7 +437,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.SalesReport'
+            $ref: '#/definitions/kasir-api_internal_models.SalesReport'
         "500":
           description: Internal Server Error
           schema:

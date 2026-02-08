@@ -34,7 +34,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Category"
+                                "$ref": "#/definitions/kasir-api_internal_models.Category"
                             }
                         }
                     }
@@ -59,7 +59,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Category"
+                            "$ref": "#/definitions/kasir-api_internal_models.Category"
                         }
                     }
                 ],
@@ -67,7 +67,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Category"
+                            "$ref": "#/definitions/kasir-api_internal_models.Category"
                         }
                     },
                     "400": {
@@ -105,7 +105,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Category"
+                            "$ref": "#/definitions/kasir-api_internal_models.Category"
                         }
                     },
                     "400": {
@@ -148,7 +148,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Category"
+                            "$ref": "#/definitions/kasir-api_internal_models.Category"
                         }
                     }
                 ],
@@ -156,7 +156,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Category"
+                            "$ref": "#/definitions/kasir-api_internal_models.Category"
                         }
                     },
                     "400": {
@@ -233,7 +233,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CheckoutRequest"
+                            "$ref": "#/definitions/kasir-api_internal_models.CheckoutRequest"
                         }
                     }
                 ],
@@ -241,7 +241,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.Transaction"
+                            "$ref": "#/definitions/kasir-api_internal_models.Transaction"
                         }
                     },
                     "400": {
@@ -286,7 +286,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Product"
+                                "$ref": "#/definitions/kasir-api_internal_models.Product"
                             }
                         }
                     }
@@ -311,7 +311,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Product"
+                            "$ref": "#/definitions/kasir-api_internal_models.Product"
                         }
                     }
                 ],
@@ -319,7 +319,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.Product"
+                            "$ref": "#/definitions/kasir-api_internal_models.Product"
                         }
                     },
                     "400": {
@@ -357,7 +357,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Product"
+                            "$ref": "#/definitions/kasir-api_internal_models.Product"
                         }
                     },
                     "400": {
@@ -400,7 +400,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Product"
+                            "$ref": "#/definitions/kasir-api_internal_models.Product"
                         }
                     }
                 ],
@@ -408,7 +408,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Product"
+                            "$ref": "#/definitions/kasir-api_internal_models.Product"
                         }
                     },
                     "400": {
@@ -471,6 +471,57 @@ const docTemplate = `{
                 }
             }
         },
+        "/report": {
+            "get": {
+                "description": "Get total revenue, total transactions, and best selling product for a specific date range",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "report"
+                ],
+                "summary": "Get sales report by date range",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Start Date (YYYY-MM-DD)",
+                        "name": "start_date",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "End Date (YYYY-MM-DD)",
+                        "name": "end_date",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/kasir-api_internal_models.SalesReport"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid date format",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/report/hari-ini": {
             "get": {
                 "description": "Get total revenue, total transactions, and best selling product for today",
@@ -488,7 +539,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.SalesReport"
+                            "$ref": "#/definitions/kasir-api_internal_models.SalesReport"
                         }
                     },
                     "500": {
@@ -502,7 +553,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.Category": {
+        "kasir-api_internal_models.Category": {
             "type": "object",
             "properties": {
                 "description": {
@@ -516,7 +567,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CheckoutItem": {
+        "kasir-api_internal_models.CheckoutItem": {
             "type": "object",
             "properties": {
                 "product_id": {
@@ -527,22 +578,22 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CheckoutRequest": {
+        "kasir-api_internal_models.CheckoutRequest": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.CheckoutItem"
+                        "$ref": "#/definitions/kasir-api_internal_models.CheckoutItem"
                     }
                 }
             }
         },
-        "models.Product": {
+        "kasir-api_internal_models.Product": {
             "type": "object",
             "properties": {
                 "category": {
-                    "$ref": "#/definitions/models.Category"
+                    "$ref": "#/definitions/kasir-api_internal_models.Category"
                 },
                 "category_id": {
                     "type": "integer"
@@ -561,7 +612,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.ProductBestSeller": {
+        "kasir-api_internal_models.ProductBestSeller": {
             "type": "object",
             "properties": {
                 "nama": {
@@ -572,11 +623,11 @@ const docTemplate = `{
                 }
             }
         },
-        "models.SalesReport": {
+        "kasir-api_internal_models.SalesReport": {
             "type": "object",
             "properties": {
                 "produk_terlaris": {
-                    "$ref": "#/definitions/models.ProductBestSeller"
+                    "$ref": "#/definitions/kasir-api_internal_models.ProductBestSeller"
                 },
                 "total_revenue": {
                     "type": "integer"
@@ -586,7 +637,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Transaction": {
+        "kasir-api_internal_models.Transaction": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -595,7 +646,7 @@ const docTemplate = `{
                 "details": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.TransactionDetail"
+                        "$ref": "#/definitions/kasir-api_internal_models.TransactionDetail"
                     }
                 },
                 "id": {
@@ -606,7 +657,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.TransactionDetail": {
+        "kasir-api_internal_models.TransactionDetail": {
             "type": "object",
             "properties": {
                 "id": {

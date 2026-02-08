@@ -10,6 +10,7 @@ import (
 type TransactionService interface {
 	Checkout(items []models.CheckoutItem) (*models.Transaction, error)
 	GetDailyReport() (models.SalesReport, error)
+	GetReport(startDate, endDate time.Time) (models.SalesReport, error)
 }
 
 type transactionService struct {
@@ -66,5 +67,9 @@ func (s *transactionService) GetDailyReport() (models.SalesReport, error) {
 	// Set time to end of the day (23:59:59)
 	endDate := time.Date(now.Year(), now.Month(), now.Day(), 23, 59, 59, 999999999, now.Location())
 
+	return s.repo.GetSalesSummary(startDate, endDate)
+}
+
+func (s *transactionService) GetReport(startDate, endDate time.Time) (models.SalesReport, error) {
 	return s.repo.GetSalesSummary(startDate, endDate)
 }
