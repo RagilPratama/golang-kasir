@@ -9,8 +9,26 @@ definitions:
       name:
         type: string
     type: object
+  models.CheckoutItem:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  models.CheckoutRequest:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/models.CheckoutItem'
+        type: array
+    type: object
   models.Product:
     properties:
+      category:
+        $ref: '#/definitions/models.Category'
+      category_id:
+        type: integer
       id:
         type: integer
       name:
@@ -18,6 +36,34 @@ definitions:
       price:
         type: integer
       stock:
+        type: integer
+    type: object
+  models.Transaction:
+    properties:
+      created_at:
+        type: string
+      details:
+        items:
+          $ref: '#/definitions/models.TransactionDetail'
+        type: array
+      id:
+        type: integer
+      total_amount:
+        type: integer
+    type: object
+  models.TransactionDetail:
+    properties:
+      id:
+        type: integer
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      quantity:
+        type: integer
+      subtotal:
+        type: integer
+      transaction_id:
         type: integer
     type: object
 host: golang-kasir-production.up.railway.app
@@ -158,11 +204,46 @@ paths:
       summary: Update category
       tags:
       - category
+  /checkout:
+    post:
+      consumes:
+      - application/json
+      description: Create a new transaction with multiple items
+      parameters:
+      - description: Checkout Data
+        in: body
+        name: checkout
+        required: true
+        schema:
+          $ref: '#/definitions/models.CheckoutRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Transaction'
+        "400":
+          description: Invalid request body
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create a new transaction (Checkout)
+      tags:
+      - transaction
   /product:
     get:
       consumes:
       - application/json
       description: Get list of all product
+      parameters:
+      - description: Product Name Filter
+        in: query
+        name: name
+        type: string
       produces:
       - application/json
       responses:

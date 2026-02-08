@@ -41,10 +41,12 @@ func (h *ProductHandler) HandleProductDetail(w http.ResponseWriter, r *http.Requ
 // @Tags product
 // @Accept json
 // @Produce json
+// @Param name query string false "Product Name Filter"
 // @Success 200 {array} models.Product
 // @Router /product [get]
 func (h *ProductHandler) GetProduct(w http.ResponseWriter, r *http.Request) {
-	product := h.service.GetAll()
+	name := r.URL.Query().Get("name")
+	product := h.service.GetAll(name)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(product)
 }

@@ -11,7 +11,7 @@ var (
 )
 
 type ProductRepository interface {
-	GetAll() []models.Product
+	GetAll(nameFilter string) []models.Product
 	GetByID(id int) (*models.Product, error)
 	Create(p models.Product) models.Product
 	Update(id int, p models.Product) (*models.Product, error)
@@ -26,14 +26,21 @@ func NewPostgresProductRepository(db *sql.DB) ProductRepository {
 	return &postgresProductRepository{db: db}
 }
 
-func (r *postgresProductRepository) GetAll() []models.Product {
+func (r *postgresProductRepository) GetAll(nameFilter string) []models.Product {
 	query := `
 		SELECT p.id, p.name, p.price, p.stock, p.category_id, 
 		       c.id, c.name, c.description
 		FROM products p
 		LEFT JOIN categories c ON p.category_id = c.id
 	`
-	rows, err := r.db.Query(query)
+
+	args := []interface{}{}
+	if nameFilter != "" {
+		query += " WHERE p.name ILIKE $1"
+		args = append(args, "%"+nameFilter+"%")
+	}
+
+	rows, err := r.db.Query(query, args...)
 	if err != nil {
 		return []models.Product{}
 	}

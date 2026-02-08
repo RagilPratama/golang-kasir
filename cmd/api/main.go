@@ -71,6 +71,20 @@ func main() {
 				REFERENCES categories(id); 
 			END IF; 
 		END $$;
+
+		CREATE TABLE IF NOT EXISTS transactions (
+			id SERIAL PRIMARY KEY,
+			total_amount INT NOT NULL,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		);
+
+		CREATE TABLE IF NOT EXISTS transaction_details (
+			id SERIAL PRIMARY KEY,
+			transaction_id INT REFERENCES transactions(id) ON DELETE CASCADE,
+			product_id INT REFERENCES products(id),
+			quantity INT NOT NULL,
+			subtotal INT NOT NULL
+		);
 	`)
 	if err != nil {
 		log.Fatal("cannot create tables:", err)
@@ -90,14 +104,17 @@ func main() {
 	// Initialize Repository
 	productRepo := repository.NewPostgresProductRepository(db)
 	categoryRepo := repository.NewPostgresCategoryRepository(db)
+	transactionRepo := repository.NewPostgresTransactionRepository(db)
 
 	// Initialize Service
 	productService := service.NewProductService(productRepo)
 	categoryService := service.NewCategoryService(categoryRepo)
+	transactionService := service.NewTransactionService(transactionRepo, productRepo)
 
 	// Initialize Handler
 	productHandler := handlers.NewProductHandler(productService)
 	categoryHandler := handlers.NewCategoryHandler(categoryService)
+	transactionHandler := handlers.NewTransactionHandler(transactionService)
 	// GET detail product
 	// PUT update product
 	http.HandleFunc("/api/product/", productHandler.HandleProductDetail)
@@ -108,6 +125,9 @@ func main() {
 	//Category
 	http.HandleFunc("/api/category", categoryHandler.HandleCategoryList)
 	http.HandleFunc("/api/category/", categoryHandler.HandleCategoryDetail)
+
+	// Transaction
+	http.HandleFunc("/api/checkout", transactionHandler.HandleCheckout)
 
 	// Swagger
 	http.HandleFunc("/swagger/", httpSwagger.WrapHandler)
